@@ -197,7 +197,7 @@ public class PlaybackOverlayFragment
         super.onPause();
         if (mPlayer.getPlayerControl().isPlaying()) {
             boolean isVisibleBehind = getActivity().requestVisibleBehind(true);
-            if (!isVisibleBehind && !getActivity().inPictureInPicture()) {
+            if (!isVisibleBehind && !getActivity().isInPictureInPictureMode()) {
                 playPause(false);
             }
         } else {
@@ -206,18 +206,9 @@ public class PlaybackOverlayFragment
     }
 
     @Override
-    public void onPictureInPictureChanged(boolean pictureInPictureMode) {
-        if (pictureInPictureMode) {
-            setFadingEnabled(true);
-        } else {
-            int state = getPlaybackState();
-            if (state == PlaybackState.STATE_PLAYING
-                    || state == PlaybackState.STATE_SKIPPING_TO_NEXT
-                    || state == PlaybackState.STATE_SKIPPING_TO_PREVIOUS) {
-                setFadingEnabled(true);
-            } else {
-                setFadingEnabled(false);
-            }
+    public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
+        if (isInPictureInPictureMode) {
+            fadeOut();
         }
     }
 
